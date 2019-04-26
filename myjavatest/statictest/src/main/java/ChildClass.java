@@ -1,25 +1,24 @@
 public class ChildClass extends ParentClass {
 
-    static int k=10;
-    static
-    {
+    static int a = 10;
+    static int b = 20;
+
+    static {
         m2();
         System.out.println("Child First Static Block");
-        System.out.println(k);
+        System.out.println(a);
     }
 
-    public static void main(String[] args)
-    {
+    static {
+        System.out.println("Child Second Static Block");
+    }
+
+    public static void main(String[] args) {
         m2();
         System.out.println("Child Main Method");
     }
-    public static void m2()
-    {
-        System.out.println(l);
+
+    public static void m2() {
+        System.out.println(b);
     }
-    static
-    {
-        System.out.println("Child Second Static Block");
-    }
-    static int l=20;
 }

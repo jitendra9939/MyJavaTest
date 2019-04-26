@@ -13,6 +13,9 @@
         <module>collectiontest</module>
         <module>statictest</module>
         <module>collectiontest</module>
+        <module>instancetest</module>
+        <module>threadtest</module>
+        <module>collectiontest</module>
     </modules>
 
 
