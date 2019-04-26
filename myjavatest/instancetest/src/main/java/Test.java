@@ -3,11 +3,11 @@ public class Test {
         System.out.println("java");
     }
 
-    Test()
-    {
+    Test() {
         System.out.println("Constructor");
     }
+
     public static void main(String[] args) {
-        Test t1=new Test();
+        Test t1 = new Test();
     }
 }

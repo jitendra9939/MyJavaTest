@@ -1,7 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 
 public class ArrayListUnique {
     public static void main(String[] args) {
@@ -28,8 +25,7 @@ public class ArrayListUnique {
         System.out.println("////////////////////////////////////// 3");
         System.out.println(employeeListNew);
 
-        for(Object value:employeeListNew)
-        {
+        for (Object value : employeeListNew) {
             employeeList.add("456");
             employeeList.remove(value);
         }
