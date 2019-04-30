@@ -16,7 +16,7 @@ public class InstanceControlTest {
     }
 
     public static void main(String[] args) {
-        InstanceControlTest instanceControlTest = new InstanceControlTest();
+        //InstanceControlTest instanceControlTest = new InstanceControlTest();
         System.out.println("Main Method");
 
     }

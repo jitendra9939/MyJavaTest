@@ -19,7 +19,7 @@ public class InstanceTestWithStatic {
     }
 
     public static void main(String[] args) {
-        InstanceTestWithStatic o = new InstanceTestWithStatic();
+        //InstanceTestWithStatic o = new InstanceTestWithStatic();
         System.out.println("main method");
     }
 }
