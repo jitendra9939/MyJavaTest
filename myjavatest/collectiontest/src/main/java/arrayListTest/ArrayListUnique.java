@@ -1,3 +1,5 @@
+package arrayListTest;
+
 import java.util.ArrayList;
 
 public class ArrayListUnique {

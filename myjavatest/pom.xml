@@ -10,12 +10,11 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>collectiontest</module>
-        <module>collectiontest</module>
         <module>statictest</module>
-        <module>collectiontest</module>
         <module>instancetest</module>
         <module>threadtest</module>
-        <module>collectiontest</module>
+        <module>designPatternAndPrincipleTest</module>
+        <module>multiThreadTest</module>
     </modules>
 
 
