@@ -15,6 +15,7 @@
         <module>threadtest</module>
         <module>designPatternAndPrincipleTest</module>
         <module>multiThreadTest</module>
+        <module>springTest</module>
     </modules>
 
 

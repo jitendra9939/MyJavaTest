@@ -5,7 +5,7 @@ public class JavaOverloadingVarArgTest {
         JavaOverloadingVarArgTest t = new JavaOverloadingVarArgTest();
         t.test(10);
         t.test();
-        t.test(10,20);
+        t.test(10, 20);
         t.test(10L);
     }
 

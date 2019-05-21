@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class LinkedListTestDemo {
     public static void main(String[] args) {
-        LinkedList ll=new LinkedList();
+        LinkedList ll = new LinkedList();
         ll.add("Java");
         ll.add(4);
         ll.add("Shiva");
@@ -16,8 +16,8 @@ public class LinkedListTestDemo {
         ll.remove(2);
         ll.add(null);
         ll.add(null);
-        ll.set(0,"test");
-        ll.set(0,"Zero");
+        ll.set(0, "test");
+        ll.set(0, "Zero");
         ll.removeLast();
         ll.addFirst("First");
 
