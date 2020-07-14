@@ -16,6 +16,7 @@
         <module>springTest</module>
     <module>demojavatest</module>
     <module>java8test</module>
+    <module>my_java_test</module>
     </modules>
 
 

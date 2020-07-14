@@ -1,0 +1,1187 @@
+// **********************************************************************
+
+// Copyright (c) 2015 Telefonaktiebolaget LM Ericsson, Sweden.
+// All rights reserved.
+// The Copyright to the computer program(s) herein is the property of
+// Telefonaktiebolaget LM Ericsson, Sweden.
+// The program(s) may be used and/or copied with the written permission
+// from Telefonaktiebolaget LM Ericsson or in accordance with the terms
+// and conditions stipulated in the agreement/contract under which the
+// program(s) have been supplied.
+// **********************************************************************
+package com.ericsson.bss.rm.cpm.core.engine.service;
+
+import java.util.Arrays;
+
+/**
+ * Enum containing all error codes that cpm can produce. The detailed description {@link #getDetailedDescription()} may contain parameters that should
+ * be populated.
+ */
+public enum ErrorCode
+{
+    //Unauthorized Access
+    AUTHENTICATION_FAILED("CPMCDAL.AuthenticationFailed", "The authentication has failed for the user.", "1"),
+    // Translation
+    TRANSLATION_ENTITY_NOT_EXISTS("Translation.EntityNotExists", "The %s with Key %s does not exist.", "2"),
+    TRANSLATION_ENTITY_ALREADY_EXISTS("Translation.EntityAlreadyExists", "The %s with Key %s already exists.", "3"),
+    TRANSLATION_TYPE_NOT_EXISTS("Translation.TypeNotExists", "The type %s does not exist.", "4"),
+    // System
+    FEATURE_FUNCTION_NOT_ACTIVE(
+            "CPMCDAL.FeatureNotActive.",
+            "The CPM Feature [ id = %s ], Function Control [ id = %s ] is not active.",
+            "5"),
+    SERVICE_NOT_ACCESSIBLE("CPMCDAL.ServiceNotAccessible", "Service for %s is not accessible.", "6"),
+    INTERNAL_ERROR("CPMCDAL.InternalError", "Internal error occurred and was unable to complete operation. %s", "7"),
+    INVALID_SERVICE_CONFIGURATION("CPMCDAL:InvalidServiceConfiguration", "Invalid configuration for %s, parameter %s, with value %s", "8"),
+    UNSUPPORTED_OPERATION("CPMCDAL.UnsupportedOperation", "Operation %s is not supported.", "9"),
+    CIL_CLUSTER_UNAVAILABLE("CPMCDAL.CilClusterUnavailable", "The Cil Cluster is Unavailable.", "10"),
+    CEL_SERIALIZATION_FAILED("CPMCDAL.CelSerializationFailed", "CEL Serialization Failed for %s.", "11"),
+    UNSUPPORTED_ENCODING("CPMCDAL.UnsupportedEncoding", "%s character set encoding is not supported.", "12"),
+    PARTITION_NOT_EXISTS("CPMCDAL.PartitionNotExists", "Partition with partitionId %s does not exist.", "13"),
+    PARTITION_NOT_ACTIVE("CPMCDAL.PartitionNotActive", "Partition with partitionId %s is not active.", "14"),
+    NO_ACTIVE_PARTITION_EXISTS("CPMCDAL.NoActivePartitionExists", "No Active Partition exist.", "15"),
+    FEATURE_NOT_ACTIVE_PARAM(
+            "CPMCDAL.FeatureNotActiveParam",
+            "The CPM %s feature is not active. The attribute %s is not supported when this feature is not active.",
+            "16"),
+    FEATURE_FUNCTION_ACTIVE(
+            "CPMCDAL.FeatureActive",
+            "%s Service is disabled : The CPM Feature [ id = %s ], Function Control [ id = %s ] is active.",
+            "17"),
+    // External
+    EXTERNAL_REFERENCE_NOT_EXISTS("CPMCDAL.ExternalReferenceNotExists", "The %s with %s %s does not exist.", "18"),
+    EXTERNAL_REFERENCE_NOT_EXISTS_TAG("CPMCDAL.ExternalReferenceNotExists", "The %s with tag '%s' to be updated does not exist.", "19"),
+    EXTERNAL_REFERENCE_CONFIG_ERROR(
+            "CPMCDAL.ExternalReferenceConfigError",
+            "The %s with id %s has a reference to a %s that is not configured correctly.",
+            "20"),
+    EXTERNAL_REFERENCE_NOT_EXISTS_FOR("CPMCDAL.ExternalReferenceNotExistsFor", "The %s with %s %s does not exist for %s with id %s.", "21"),
+    EXTERNAL_REFERENCE_NOT_EXISTS_FOR_PARENT(
+            "CPMCDAL.ExternalReferenceNotExistsForParent",
+            "The %s [ id = %s ] does not exist for %s [ id = %s ] in %s [ id = %s] .",
+            "22"),
+    // Request
+    ARGUMENTS_NOT_ALLOWED_AT_SAME_TIME(
+            "CPMCDAL.ArgumentsNotAllowedAtSameTime",
+            "%s and %s arguments cannot be used at the same time",
+            "23"),
+    DEPENDENCY_EXISTS(
+            "CPMCDAL.DependencyExists",
+            "%s references exist for %s with [ id = %s ]. References must be removed prior to the deletion.",
+            "24"),
+    DEPENDENCY_EXISTS_FOR(
+            "CPMCDAL.DependencyExistsFor",
+            "%s references exist for %s with [ id = %s ] and for %s with [ id = %s ]. References must be removed prior to the deletion.",
+            "25"),
+    ENTITY_NOT_EXISTS("CPMCDAL.EntityNotExists", "The %s with %s %s does not exist.", "26"),
+    ENTITY_NOT_EXISTS_FOR("CPMCDAL.EntityNotExistsFor", "The %s with %s %s does not exist for %s with %s %s.", "27"),
+    ENTITY_INVALID("CPMCDAL.EntityInvalid", "The %s with %s %s is invalid.", "28"),
+    ENTITY_DUPLICATE_INPUT("CPMCDAL.EntityDuplicateInput", "The %s with %s %s is duplicate in the input.", "29"),
+    INVALID_JSON("CPMCDAL.InvalidJson", "Request payload is incorrect: %s", "30"),
+    INVALID_EXPAND_VALUE(
+            "CPMCDAL.InvalidExpandValue",
+            "The expand parameter value %s is invalid. Supported values are recursive, onelevel and none.",
+            "31"),
+    INVALID_REQUEST("CPMCDAL.InvalidRequest", "Invalid request with path %s.", "32"),
+    INVALID_PARAMETER("CPMCDAL.InvalidParameter", "The parameter %s is not valid.", "33"),
+    INVALID_PARAMETER_VALUE("CPMCDAL.InvalidParameterValue", "The value %s is not valid for parameter %s.", "34"),
+    INVALID_INPUT_VALUE_FOR("CPMCDAL.InvalidInputValueFor", "The input %s is invalid for %s.", "35"),
+    INVALID_PARAMETER_FOR("CPMCDAL.InvalidParameterFor", "The parameter %s for %s with id %s is not valid.", "36"),
+    INCORRECT_FORMAT_FOR("CPMCDAL.IncorrectFormatFor", "The value %s for %s is not in correct format for %s.", "37"),
+    INVALID_ASSIGNMENT_RULE(
+            "CPMCDAL.InvalidBillAccAssignmentRule",
+            "Billing account with id %s is not atomic and cannot be referenced from a billAccAssignmentRule.",
+            "38"),
+    INVALID_DATE("CPMCDAL.InvalidDate", "Invalid %s. Can not be in the %s", "39"),
+    INVALID_COMPRISEDOF_REFERENCE_ID("CPMCDAL.InvalidComprisedofReferenceID", "The comprisedOf contains invalid reference ID %s.", "40"),
+    INVALID_COMPRISED_OF_LIST("CPMCDAL.InvalidComprisedOfList", "ComprisedOf list should contain only atomic billing account ids.", "41"),
+    INVALID_TIME_PERIOD_FOR(
+            "CPMCDAL.InvalidTimePeriodFor",
+            "The valid for time period is invalid for %s with %s %s because the start time %s is later than end time %s.",
+            "42"),
+    INVALID_TIME_PERIOD("CPMCDAL.InvalidTimePeriod", "The period %s - %s is invalid, start date must not be later than end date", "43"),
+    INVALID_WEEKDAY_TIME_PERIOD(
+            "CPMCDAL.InvalidWeekdayTimePeriod",
+            "The time period %s - %s is invalid, start time must not be later than end time",
+            "44"),
+    INVALID_TMP_REFERENCE_OWN_ID(
+            "CPMCDAL.CannotHaveReferenceToItsOwnID",
+            "The comprisedOf %s should never be mapped to its own tmpId.",
+            "45"),
+    INVALID_TRIGGER_TIME("CPMCDAL.Scheduler.InvalidTriggerTime", "TriggerTime %s must not be in the past or in the current minute.", "46"),
+    INVALID_STATE_TRANSITION("CPMCDAL.InvalidStateTransition", "The state transition from %s to %s is not a valid transition.", "47"),
+    INVALID_STATE_TRANSITION_FROM_STATE_WITH_NULL_MISSING(
+            "CPMCDAL.InvalidStateTransition",
+            "It's mandatory to specify a state transition with fromState set to value null.",
+            "48"),
+    INVALID_NUMBER_OF_STATE_TRANSITION_INITIAL_STATE(
+            "CPMCDAL.InvalidNumberOfStateTransitionInitialState",
+            "There must be only one stateTransition with fromState set to value null.",
+            "49"),
+    NOT_UNIQUE_TRANSITION_STATE("CPMCDAL.NotUniqueTransitionState", "The combinations of transition states from, to are not unique.", "50"),
+    NOT_UNIQUE_STATE_MACHINE("CPMCDAL.NotUniqueStateMachine", "The state name is not unique.", "51"),
+    INVALID_UPDATE_OPERATION("CPMCDAL.InvalidUpdateOperation", "Update of parameter %s is not allowed.", "52"),
+    INVALID_UPDATE_VALUE_OPERATION_PPLC(
+            "CPMCDAL.InvalidUpdateValueOperation",
+            "Removal of existing tag during update of %s in PPLC spec is not allowed.",
+            "53"),
+    INVALID_UPDATE_VALUE_OPERATION("CPMCDAL.InvalidUpdateValueOperation", "Update the value %s of parameter %s is not allowed.", "54"),
+    INVALID_STATE_TRANSITION_WITH_REASON(
+            "CPMCDAL.InvalidStateTransition",
+            "The state transition to %s is not a valid transition. %s",
+            "55"),
+    INVALID_STATUS_AT_PERIOD_WITH_REASON(
+            "CPMCDAL.InvalidStatusAtPeriod",
+            "The status %s for the %s with %s %s is not valid for the period %s to %s. %s",
+            "56"),
+    INVALID_STATE_AT_CREATE("CPMCDAL.InvalidStateAtCreate", "The state %s is invalid for create with entity %s.", "57"),
+    INVALID_URL("CPMCDAL.Scheduler.InvalidURL", "URL %s is not correct.", "58"),
+    INVALID_URL_MISSING_QUERY_PARAMETERS("CPMCDAL.QueryParametersMissingInURL", "Query parameters are missing in the URL %s.", "59"),
+    INVALID_REFERENCE_OWN_ID("CPMCDAL.InvalidReferenceToItsOwnID", "The comprisedOf %s should never be mapped to its own Id.", "60"),
+    MISSING_MANDATORY_INPUT_FOR("CPMCDAL.MissingMandatoryInputFor", "Missing mandatory input parameter %s for %s with index %s.", "61"),
+    MISSING_MANDATORY_INPUT_FOR_ENTITY_WITH_IDENTIFIER(
+            "CPMCDAL.MissingMandatoryInputForEntityWithIdentifier",
+            "Missing mandatory input parameter %s for %s with [%s = %s].",
+            "62"),
+    MISSING_MANDATORY_INPUT_FOR_SPECIFICATION(
+            "CPMCDAL.MissingMandatoryInputForSpecification",
+            "Missing mandatory input of %s for %s [ id = %s ] in %s [ id = %s ].",
+            "63"),
+    MISSING_MANDATORY_INPUT_FOR_WITHOUT_INDEX("CPMCDAL.MissingMandatoryInputFor", "Missing mandatory input parameter %s for %s.", "64"),
+    MISSING_MANDATORY_INPUT_VALUE("CPMCDAL.MissingMandatoryInputValue", "Missing mandatory input parameter %s.", "65"),
+    MISSING_MANDATORY_INPUT_VALUE_CHARVALUEREF(
+            "CPMCDAL.MissingMandatoryInputValueCharValueRef",
+            "Missing mandatory input parameter %s for characteristicSpecification [ id = %s ] on %s [ id = %s ].",
+            "66"),
+    INVALID_RMREF_FORMAT("CPMCDAL.InvalidRmrefFormat", "The [Rmref = %s] is not in correct format for [Event = %s]. ", "67"),
+    CHARACTERISTIC_NOT_FOUND(
+            "CPMCDAL.CharacteristicNotFound",
+            "The characteristic with [ID = %s] and CSV with [ID = %s ] is not found in [Entity = %s] with [EntityId = %s]. ",
+            "68"),
+    INVALID_VALUES_FOR_CHARACTERISTICVALUEUPDATES(
+            "CPMCDAL.InvalidCharacteristicValueUpdatesValues",
+            "CharacteristicValueUpdates array should not have both customer and contract entity",
+            "69"),
+    MISSING_MANDATORY_INPUT_FOR_TIME(
+            "CPMCDAL.MissingMandatoryInputForTime",
+            "Missing mandatory input parameter %s between %s and %s",
+            "70"),
+    MISSING_MANDATORY_INPUT_REQUIRED_WITH_ASSOCIATED_ENTITY(
+            "CPMCDAL.MissingMandatoryInputRequiredWithAssociatedEntity",
+            "Missing mandatory input parameter %s for %s with id %s. Because %s with %s %s is mandatorily associated with %s of %s %s",
+            "71"),
+    MULTIPLE_USE_OF_SPECIFICATION("CPMCDAL.MultipleUseOfSpecification", "Service specification %s used multiple times.", "72"),
+    NO_ENTITY_DEFINITION_REFERENCE_IN_INPUT(
+            "CPMCDAL.NoEntityDefinitionReferenceInInput",
+            "For %s definition object, no reference with %s %s is found in the input.",
+            "73"),
+    MISSING_REFERENCE_IN_INPUT(
+            "CPMCDAL.MissingReferencedInInput",
+            "The %s with %s %s referenced by %s with %s %s is missing in the input.",
+            "74"),
+    NON_EXISTENT_BILLING_ACCOUNT_SPECIFICATION(
+            "CPMCDAL.NonExistentBillingAccountSpecification",
+            "The billing account specification with id %s does not exist.",
+            "75"),
+    OVERLAPPING_ENTITY_VALIDITY("CPMCDAL.OverlappingEntityValidity", "The entity %s has an overlapping %s.", "76"),
+    OVERLAPPING_ENTITY_VALIDITY_FOR_CHARACTERISTICS(
+            "CPMCDAL.OverlappingEntityValidityForCharacteristics",
+            "Overlapping %s found for characteristicSpecification [ id = %s ] on %s [ id = %s].",
+            "77"),
+    OVERLAPPING_TIME_PERIOD_FOR(
+            "CPMCDAL.OverlappingTimePeriodFor",
+            "The valid for time period is invalid for %s with %s and %s because it overlaps with existing data.",
+            "78"),
+    TIME_PERIOD_NOT_COVERED(
+            "CPMCDAL.TimePeriodNotCovered",
+            "The time period from %s to %s is not convergent with any sent validFors.",
+            "79"),
+    TIME_PERIOD_NOT_COVERED_FOR(
+            "CPMCDAL.TimePeriodNotCoveredFor",
+            "The time period from %s to %s is not convergent with %s validFor.",
+            "80"),
+    ENTITY_REFERENCED_MULTIPLE_TIMES(
+            "CPMCDAL.EntityReferencedMultipleTimes",
+            "The %s with %s %s is referenced multiple times as child of other %s.",
+            "81"),
+    ENTITY_REFERENCED_MULTIPLE_TIMES_CHARACTERISTICS(
+            "CPMCDAL.EntityReferencedMultipleTimesCharacteristics",
+            "The %s with %s %s on %s [ id = %s ] is referenced multiple times as child of other %s.",
+            "82"),
+    STATUS_DONT_EXISTS_FOR_ENTITY("CPMCDAL.InvalidStatusForEntityType", "Invalid status %s for entity type %s.", "83"),
+    NOT_SUPPORTED_PARAMETER_FOR_ENTITY(
+            "CPMCDAL.NotSupportedParameterForEntityType",
+            "Parameter %s is not supported for entity type %s.",
+            "84"),
+    STATUS_REASON_DOESNT_EXIST_FOR_ENTITY("CPMCDAL.InvalidStatusReasonForEntityType", "Invalid status reason %s for entity type %s.", "85"),
+    READ_ONLY_INPUT_VALUE("CPMCDAL.ReadOnlyInputValue", "Parameter %s is read only and must not be used in request.", "86"),
+    UNIQUE_PARAMETER_IN_LIST("CPMCDAL.UniqueParamInList", "Parameter %s should be unique in list of %s.", "87"),
+    REFERENCED_ENTITY_MISSING_IN_INPUT(
+            "CPMCDAL.ReferencedEntityMissingInInput",
+            "Referenced %s with %s %s is not found in the input.",
+            "88"),
+    REFERENCE_MISSING_ID("CPMCDAL.ReferencedEntityMissingInInput", "Missing id or tmpId in %s.", "89"),
+    VALID_ENTITY_NOT_EXISTS("CPMCDAL.ValidEntityNotExists", "The %s with %s %s does not exist at the requested date or time period.", "90"),
+    NO_PERSONALIZATION_ALLOWED_ON_COMPOSITE_CHARACTERISTIC_WITH_PURPOSE_DIMENSION(
+            "CPMCDAL.NoPersonalizationAllowedOnCompositeCharacteristicWithPurposeDimension",
+            "Personalization not allowed for composite CharacteristicSpecification [ id = %s ] with purpose dimensions in %s [ id = %s ].",
+            "91"),
+    TRANSLATE_TO_RELATION_NOT_SUPPORTED_FOR_SPECIFICATION_TYPE(
+            "CPMCDAL.TranslateToRelationNotSupportedForSpecificationType",
+            "The translate to relation for entity with specification type %s is not supported.",
+            "92"),
+    INVALID_COMPRISED_OF("CPMCDAL.InvalidComprisedOfList", "ComprisedOf in %s should not be empty.", "93"),
+    PPLC_DATA_MISSING("CPMCDAL.PPLCDataMissing", "The prePaidLifeCycleData is missing on contract with id %s.", "94"),
+    DATE_IS_AFTER_VALIDITY_PERIOD(
+            "CPMCDAL.DateIsAfterValidityPeriod",
+            "The %s is invalid for %s with %s %s because the date %s is after validity period end time %s.",
+            "95"),
+    INVALID_CHARACTERISTIC_COMPRISED_OF_LIST(
+            "CPMCDAL.InvalidCharacteristicComprisedOfList",
+            "ComprisedOf list should contain only atomic characteristic ids.",
+            "96"),
+    INVALID_STATUS_TRANSITION(
+            "CPMCDAL.InvalidStatusTransition",
+            "The status transition from %s to %s is not a valid transition for the %s with %s %s.",
+            "97"),
+    INVALID_INITIAL_STATUS("CPMCDAL.InvalidInitialStatus", "The status %s is not a valid initial status for the %s with %s %s.", "98"),
+    INVALID_PRODUCT_STATUS("CPMCDAL.InvalidProductStatus", "The status %s is not valid for product with %s %s.", "99"),
+    INVALID_STATUS_TRANSITION_ALIGNMENT(
+            "CPMCDAL.InvalidStatusTransitionAlignment",
+            "The status transition from %s to %s for the %s with %s %s is not correctly aligned in time.",
+            "100"),
+    INVALID_STATUS_PERIOD_ALIGNMENT(
+            "CPMCDAL.InvalidStatusPeriodAlignment",
+            "The statuses for the %s with %s %s are not aligned to the start and/or end of the validFor period.",
+            "101"),
+    UNDEFINED_STATUS("CPMCDAL.UndefinedStatus", "The status %s for the %s with %s %s is not defined in CPM.", "102"),
+    PPLC_ASSIGNMENT_NOT_ALLOWED(
+            "CPMCDAL.AssignmentNotAllowed",
+            "PrepaidLifeCycle can be assign to contract only when paymentContext is Prepaid.",
+            "103"),
+    STATE_TRANSITION_NOT_ALLOWED(
+            "CPMCDAL.StateTransitionNotAllowed",
+            "PrepaidLifeCycleState transition can only be performed to contract with active status.",
+            "104"),
+    STATE_TRANSITION_FAILED("CPMCDAL.StateTransitionFailed", "A scheduled prepaidLifeCycleState transition has failed.", "105"),
+    INVALID_COMPRISED_OF_VALIDITY_PERIOD_COVERAGE(
+            "CPMCDAL.InvalidComprisedOfValidityPeriodCoverage",
+            "The composite %s with [%s = %s] should cover the validity period of the atomic %s with [%s = %s]",
+            "106"),
+    INVALID_REFERENCED_ENTITY_VALIDITY_PERIOD_COVERAGE(
+            "CPMCDAL.InvalidReferencedEntityValidityPeriodCoverage",
+            "The referenced %s with [%s = %s] should cover the validity period of the %s reference from [%s]",
+            "107"),
+    INVALID_REFERENCED_ENTITY_STATUS_COVERAGE(
+            "CPMCDAL.InvalidReferencedEntityStatusCoverage",
+            "The %s with [%s = %s] with status %s from %s to %s must be covered by the referenced %s with statuses %s.",
+            "108"),
+    INVALID_DIRECT_REFERENCED_ENTITY_VALIDITY_PERIOD_COVERAGE(
+            "CPMCDAL.InvalidDirectReferencedEntityValidityPeriodCoverage",
+            "The referenced %s with [%s = %s] should cover the validity period of the %s with [%s = %s]",
+            "109"),
+    OVERLAPPING_PRICE_TYPE_VALIDITY(
+            "CPMCDAL.OverlappingPriceTypeValidity",
+            "The entity %s with [%s = %s] has two or more overlapping billAccAssignmentRulesLinks that point towards the same price type.",
+            "110"),
+    INVALID_TIME_PERIOD_COVERAGE(
+            "CPMCDAL.InvalidTimePeriodCoverage",
+            "The time period of %s with [%s = %s] must be covered by %s to %s with [%s = %s].",
+            "111"),
+    MISMATCHING_PAYMENT_CONTEXTS(
+            "CPMCDAL.MismatchingPaymentContexts",
+            "Payment context on %s with [%s = %s] does not match payment context on %s with [%s = %s] for priceType=%s",
+            "112"),
+    MISSING_VALID_INPUT_FOR("CPMCDAL.MissingValidInputFor", "Missing valid %s for %s with [%s = %s] with %s %s.", "113"),
+    PRICETYPE_MISMATCH(
+            "CPMCDAL.PriceTypeMismatch",
+            "The priceType %s of the BillingAccountAssignmentRuleLink with [%s = %s] on ProductPrice with [%s = %s] does not match the ProductOfferingPrice.priceType.",
+            "114"),
+    BUCKET_SPEC_NOT_ASSOCIATED_WITH_BASPEC(
+            "CPMCDAL.InvalidBucketSpec",
+            "The bucketSpecification with [id = %s] is not associated with the billingAccountSpecification with [id = %s]",
+            "115"),
+    ALL_REQUIRED_PARAMETERS_NOT_PRESENT(
+            "CPMDAL.AllRequiredParametersNotPresent",
+            "Parameters %s and %s must both be present or omitted.",
+            "116"),
+    REQUEST_NOT_ACCORDING_TO_SPEC("CPMCDAL.RequestNotAccordingtoSpec", "The request is not valid according to specification.%s", "117"),
+    INVALID_INCOMING_JSON_PROFILE_NAME(
+            "CPMCDAL.InvalidIncomingJsonProfileName",
+            "The request Json schema is not valid according to specification.",
+            "118"),
+    INVALID_OUTGOING_JSON_PROFILE_NAME(
+            "CPMCDAL.InvalidOutgoingJsonProfileName",
+            "The response Json schema is not valid according to specification.",
+            "119"),
+    INVALID_INPUT_VALUE("CPMCDAL.InvalidInputValue", "The parameter %s was explicitly set to invalid value.", "120"),
+    NO_VALID_PRODUCT_PRICE_EXISTS_FOR_PRODUCT_POLICY_REF(
+            "CPMCDAL.NoValidProductPriceExistsForProductPolicyRef",
+            "No valid productPrice exists for given ProductPolicyRef with [poPolicyRefId = %s] of Product with [productOfferingId = %s] ",
+            "121"),
+    NOT_SINGLE_VERSIONED_ENTITY_SPEC(
+            "CPMCDAL.NotSingleVersionedEntitySpec",
+            "Only one VersionedEntitySpecification can be deffined",
+            "122"),
+    ENTITY_SPEC_MIGRATED("CPMCDAL.EntitySpecMigrated", "EntitySpecification with [ entityType = %s ] is migrated", "123"),
+    OVERLAP_OR_GAP_IN_PRODUCT_POLICY_REF_VALIDITY_FOR_SAME_EVENT(
+            "CPMCDAL.OverlapOrGapInProductPolicyRefValidity",
+            "ProductPolicyRefs with [%s = %s] and [%s = %s] should not have validity with gaps or overlapping validity as both refer to same Event with [id = %s] ",
+            "124"),
+    PPR_VALIDITY_NOT_COVERING_PRODUCT_VALIDITY(
+            "CPMCDAL.pprValidityNotCoveringProductValidity",
+            "Validity of ProductPolicyRef referring recurrent Event with [id = %s] should cover validity of product",
+            "125"),
+    UNIT_OF_MEASUREMENT_NOT_OF_MEASURE_TYPE("CPMCDAL.invalidUnitOfMeasure", "The UnitOfMeasure %s is not of type %s.", "126"),
+    MISSING_DATA("CPMCDAL.missingData", "The value for %s is not found on the %s with %s %s.", "127"),
+    INVALID_VALUE_TYPE("CPMCDAL.invalidValueType", "The valueType %s in not a valid type.", "128"),
+    CONTACT_MEDIUM_SPECIFICATIONID_ALREADY_SET(
+            "CPMCDAL.ContactMediumSpecificationIdAlreadySet",
+            "The specification id cannot be updated for the contact medium with [id = %s].",
+            "129"),
+    INVALID_COMBINATION_OF_PARAMETERS("CPMCDAL.invalidCombination", "The combination of %s and %s is not allowed.", "130"),
+    INVALID_SPECIFICATION_COMBINATION_OF_PARAMETERS_CHARACTERISTICS(
+            "CPMCDAL.invalidSpecificationCombinationCharacteristics",
+            "%s with value regulator %s for CharacteristicSpecification [ id  = %s] on %s [ id = %s].",
+            "131"),
+    INVALID_SPECIFICATION_COMBINATION_OF_PARAMETERS(
+            "CPMCDAL.invalidSpecificationCombination",
+            "%s with value regulator %s for characteristic specification with id %s.",
+            "132"),
+    NO_PERSONALIZATION_ALLOWED(
+            "CPMCDAL.noPersonalizationAllowed",
+            "The personalization of characteristic values for CharacteristicSpecification [ id = %s ] in %s [ id = %s ] with value regulator of type %s is not allowed.",
+            "133"),
+    NO_PERSONALIZATION_ALLOWED_WHEN_CBO_IS_FALSE(
+            "CPMCDAL.noPersonalizationAllowedWhenCBOIsFalse",
+            "The personalization of characteristic values is not allowed because canBeOverriden is false for CharacteristicSpecification with [ id =  %s ] in %s [ id = %s  ].",
+            "134"),
+    SPECIFICATION_ACTIVATED(
+            "CPMCDAL.specificationActivated",
+            "The specification of type %s with id %s is activated and this operation is not allowed.",
+            "135"),
+    INVALID_VALUE_FOR_TYPE("CPMCDAL.invalidValueForType", "The value %s is invalid for value type %s on parameter %s.", "136"),
+    INVALID_VALUE_FOR_STRING_TYPE_IN_CHARACTERISTICS(
+            "CPMCDAL.invalidValueForStringTypeInCharacteristics",
+            "The value %s is invalid for value type %s on parameter %s, number of characters should be between %s to %s.",
+            "137"),
+    INVALID_VALUEFROM_OR_VALUETO("CPMCDAL.invalidValueFromORValueTo", "The valueTo %s is not higher than valueFrom %s.", "138"),
+    VALUE_NOT_POSSIBLE_TO_COMBINE_WITH_FROM_AND_OR_TO(
+            "CPMCDAL.valueCombinedWithFromOrToNotAllowed",
+            "The value is exclusive or with valueFrom and valueTo, it is not allowed to combine them in the same CharacteristicSpecificationValue.",
+            "139"),
+    VALUE_FROM_AND_VALUE_BOTH_NEEDS_TO_BE_SET(
+            "CPMCDAL.valueFromAndValueTo",
+            "If valueFrom or valueTo is set, then both needs to be set.",
+            "140"),
+    SPECIFICATION_IDS_DONT_MATCH(
+            "CPMCDAL.specificationIDsDontMatch",
+            "The entered specification %s does not match the specifications id %s.",
+            "141"),
+    SPECIFICATION_ID_NOT_FOUND("CPMCDAL.specificationNotFound", "The entered specification %s was not found.", "142"),
+    INVALID_CHARVALUEREF(
+            "CPMCDAL.invalidCharValueRef",
+            "The entered CharValueRef %s is pointing to an entity that doesnt exist on the specification.",
+            "143"),
+    NOT_ALLOWED_TO_SHRINK_CARDINALITY(
+            "CPMCDAL.notAllowedToShrinkCardinality",
+            "The existing %s %s is not allowed to be shrunken. Sent in value was %s.",
+            "144"),
+    ENTITY_TIME_PERIOD_NOT_COVERED_BY_CHARACTERISTIC_VALUES(
+            "CPMCDAL.entityTimePeriodNotCoveredByCharacteristicValues",
+            "The charcteristicValues for characterisitcSpecification [ id = %s ] defined in %s [ id = %s ] does not cover the validity of the %s.",
+            "145"),
+    DUPLICATE_LIFE_CYCLE_STATE_DATA(
+            "CPMCDAL.DuplicateLifeCycleStateDataInCOBA",
+            "Configuration error in COBA. LifeCycleStates %s and %s contains the same entity and lifeCycleState",
+            "146"),
+    NO_PERIOD_SET_FOR_STATUS(
+            "CPMCDAL.NoPeriodSetForStatus",
+            "The %s with %s %s with period %s to %s is not completely covered by the referenced %s with status %s.",
+            "147"),
+    NOT_ALLOWED_FOR_COMPOSITE(
+            "CPMCDAL.NotAllowedForComposite",
+            "The parameter %s is not allowed on a composite CharacteristicSpecification",
+            "148"),
+    BLANK_REFERENCE_NOT_ALLOWED(
+            "CPMCDAL.BlankReferenceNotAllowed",
+            "Entity %s can not have blank references for CharacteristicSpecification [ id = %s ] in %s [ id = %s ].",
+            "149"),
+    COMPRISED_OF_IS_MANDATORY_WHEN_REFERENCING_COMPOSITE_CHAR_SPEC(
+            "CPMCDAL.ComprisedOfIsMandatoryWhenReferencingCompositeCharSpec",
+            "Characteristic needs to have comprisedOf set when referencing a CharacteristicSpecification [ id = %s ] that is composite in %s [ id = %s ].",
+            "150"),
+
+    INVALID_VALUE_MUST_BE("CPMCDAL.ValueMustBe", "The value of the parameter %s must %s.", "151"),
+    PRODUCT_STATUS_TIME_PERIOD_NOT_COVERED_BY_REFERENCE(
+            "CPMCDAL.ProductStatusTimePeriodNotCoveredByReference",
+            "The status %s on product with %s %s is not covered by a valid status on %s with %s %s.",
+            "152"),
+    NO_REFERENCE_STATUS_COVERS_PRODUCT_STATUS(
+            "CPMCDAL.NoReferenceStatusCoversProductStatus",
+            "No statuses exists for %s with %s %s that covers product statuses with %s %s.",
+            "153"),
+    MISSING_VALID_ENTITY_REFERENCE(
+            "CPMCDAL.MissingValidEntityReference",
+            "The %s with %s %s does not exist on contract or was not referenced correctly.",
+            "154"),
+    NOT_BETWEEN_MIN_MAX_CARDINALITY(
+            "CPMCDAL.NotBetweenMinMaxCardinality",
+            "The number of %s with %s set to %s must be between minCardinality and maxCardinality.",
+            "155"),
+    MEASURE_AND_UNITOFMEASURE_ONLY_VALID_AS_PAIR(
+            "CPMCDAL.MeasureAndUnitOfMeasureOnlyValidinPair",
+            "Measure and UnitOfMeasure both needs to be set if one is set.",
+            "156"),
+    INVALID_VALUE_WHEN_SPEC_IS_ACTIVE(
+            "CPMCDAL.InvalidValueWhenSpecIsActive",
+            "Value of parameter %s is not allowed to be updated when state is active.",
+            "157"),
+    CONTACT_MEDIUM_SPECIFICATION_NOT_ACTIVE(
+            "CPMCDAL.ContactMediumSpecificationNotActive",
+            "Contact medium specification %s is not active.",
+            "158"),
+    INVALID_CONTENT_IN_JSON_PAYLOAD("CPMCDAL.InvalidContentInJsonPayload", "Invalid content/characters in Json payload.", "159"),
+    NUMBER_NOT_BETWEEN_MIN_MAX_CARDINALITY(
+            "CPMCDAL.NumberOfValuesNotBetweenMinMaxCardinality",
+            "The number of %s values %s for characteristic specification %s must be between minCardinality %s and maxCardinality %s.",
+            "160"),
+    NUMBER_NOT_BETWEEN_MIN_MAX_CARDINALITY_FOR_CHARACTERISTICS(
+            "CPMCDAL.NumberOfValuesNotBetweenMinMaxCardinalityForCharacteristics",
+            "The number of values %s for CharacteristicSpecification [ id =  %s ] must be between minCardinality %s and maxCardinality %s for  %s [ id = %s ] .",
+            "161"),
+    NUMBER_LESS_THEN_MIN_CARDINALITY(
+            "CPMCDAL.NumberOfValuesLessThenMinCardinality",
+            "The number of %s values %s for CharacteristicSpecification [ id =  %s ] must be greater then or equal to minCardinality %s in %s [ id = %s ].",
+            "162"),
+    NOT_ALLOWED_TO_PERSONALIZE_CHARACTERISTIC(
+            "CPMCDAL.NotAllowedToPersonalizeCharacteristicValue",
+            "It is not allowed to personalize characteristic value on %s [ id =%s] with CharacteristicSpecification [ id = %s ] due to the translate to relation to the parent entity.",
+            "163"),
+    NOT_ALLOWED_TO_PERSONALIZE_WITH_SUB_ENTITY(
+            "CPMCDAL.NotAllowedToPersonalizeWithSubEntity",
+            "Personalization is not allowed at %s for Characteristic Specification [id=%s] as this Characteristic Specification is translated to %sSpecification [ id = %s ].",
+            "164"),
+    INVALID_COMPOSITE_VALUE_NUMBER(
+            "CPMCDAL.InvalidValueNumberForCompositeCharacteristic",
+            "Multiple values not allowed for parent characteristics for characteristicSpecification [ id = %s ] from %s [ id = %s].",
+            "165"),
+    INVALID_COMPOSITE_CHARACTERISTIC_VALUE(
+            "CPMCDAL.InvalidCompositeCharacteristicValue",
+            "CharacteristicVaues for CharacteristicSpecification [id=%s] can contain only a charValueRef to a Characteristic specification in %s [ id  = %s].",
+            "166"),
+    PERSONALIZATION_NOT_ALLOWED_WITH_DISCRETE_TRUE(
+            "CPMCDAL.PersonalizationNotAllowedWithDiscreteTrue",
+            "It is not allowed to personalize Characteristic [ id = %s ] for Characteristic specification value  [ id = %s ] with discrete flag equal %s in %s [ id = %s ].",
+            "167"),
+    PARAMETERS_MISMATCH("CPMCDAL.ParametersMismatch", "Parameters %s and %s must match", "168"),
+    ENTITY_REFERENCE_AMBIGUOUS("CPMCDAL.ReferenceAmbiguousInInput", "Referenced %s with tmpId %s is ambiguous.", "169"),
+    NOT_SUPPORTED_VALUE_REGULATOR(
+            "CPMCDAL.NotSupportedValueRegulator",
+            "ValueRegulator %s is not supported for CharacteristicSpecification [ id = %s ] for %s [ id = %s ].",
+            "170"),
+    NOT_ALLOWED_CHARACTERISTIC_VALUES_FOR_SPECIFICATION(
+            "CPMCDAL.NotAllowedCharacteristicValuesForSpecification",
+            "Not allowed to create characteristic values for specification %s.",
+            "171"),
+    VALUE_DOES_NOT_FOLLOW_CONSTRAINT(
+            "CPMCDAL.ValueDoesNotFollowConstraint",
+            "The Value %s does not follow the constraint %s for derived value type %s defined in the characteristic specification.",
+            "172"),
+    INVALID_UNIT_OF_MEASURE(
+            "CPMCDAL.InvalidUnitOfMeasure",
+            "The UnitOfMeasure %s in charValueRef [id= %s] on CharacteristicSpecification [ id = %s ] does not match with UnitOfMeasure %s in %s [ id = %s ].",
+            "173"),
+    UNIT_OF_MEASURE_NOT_ALLOWED("CPMCDAL.UnitOfMeasureNotAllowed", "UnitOfMeasure %s is not allowed for the purpose %s", "174"),
+    UNIT_OF_MEASURE_MUST_BE_EQUAL_TO_SPECIFICATION_UNIT_OF_MEASURE(
+            "CPMCDAL.UnitOfMeasureMustBeEqualToSpecificationUnitOfMeasure",
+            "Requested unitOfMeasure %s must be equal to unitOfMeasure %s for Characteristic Specification [id = %s] and Characteristic Specification Value [id = %s].",
+            "175"),
+    UNIT_OF_MEASURE_NOT_ALLOWED_WITHOUT_PROVIDING_VALUE_FOR_VR_CBP(
+            "CPMCDAL.UnitOfMeasureNotAllowedWithoutProvidingValueForVRCanBePersonalized",
+            "UnitOfMeasure not allowed without providing value for value regulator CanBePersonalized for CharacteristicSpecification [ id = %s ] from %s [ id = %s ].",
+            "176"),
+    UNIT_OF_MEASURE_NOT_ALLOWED_FOR_VR_SELECTION(
+            "CPMCDAL.UnitOfMeasureNotAllowedForVRSelection",
+            "Its not allowed to provide UnitOfMeasure for value regulator SELECTION for CharacteristicSpecification [ id = %s ] in %s [ id = %s ].",
+            "177"),
+    UNIT_OF_MEASURE_NOT_ALLOWED_WITH_VR_SELECTION_FOR_CPM_CHARACTERISTICS(
+            "CPMCDAL.UnitOfMeasureNotAllowedWithVRSelectionForCpmCharacteristics",
+            "UnitOfMeasure is not allowed with value regulator SELECTION for CharacteristicSpecification with [ id = %s ].",
+            "178"),
+    INVALID_VALUE_FROM("CPMCDAL.InvalidValueFrom", "Not able to validate due to faulty configuration of valueFrom with value %s", "179"),
+    INVALID_VALUE_TO("CPMCDAL.InvalidValueTo", "Not able to validate due to faulty configuration of valueTo with value %s", "180"),
+    SERVICE_REGISTERY_UNAVAILABLE("CPMCDAL.ServiceRegisteryUnavailable", "Service registery is Unavailable", "181"),
+    NOT_WITHIN_SPECIFIED_RANGE(
+            "CPMCDAL.NotWithinSpecifiedRange",
+            "The characteristic value %s is not within allowed specification range of min value %s  and max value %s for CharValRef  %s.",
+            "182"),
+    NOT_WITHIN_SPECIFIED_RANGE_IN_CHARACTERISTICS(
+            "CPMCDAL.NotWithinSpecifiedRangeInCharacteristics",
+            "The characteristic value %s is not within allowed range of min value %s  and max value %s for CharValRef  %s in CharacteristicSpecification [ id =  %s ] in %s [ id = %s ].",
+            "183"),
+    CHAR_SPEC_VALUE_MUST_HAVE_DISCRETE_VALUE(
+            "CPMCDAL.CharSpecValueMustHaveDiscreteValue",
+            "The CharacteristicSpecificationValue [ id = %s ] must have a discrete value for CharacteristicSpecification [ id = %s ] with Value Regulator SELECTION in %s [ id = %s ].",
+            "184"),
+    CHAR_VALUE_MUST_MATCH_CHAR_SPEC_VALUE(
+            "CPMCDAL.CharValueValueMustMatchCharSpecValueValue",
+            "The CharacteristicValue.value of %s must match the CharacteristicSpecificationValue.value of %s for charValueRef %s for CharacteristicSpecification [ id = %s ] in %s [ id = %s ].",
+            "185"),
+    INVALID_BILLING_CYCLE_SPECIFICATION_CHARACTERISTIC_VALUES(
+            "CPMCDAL.InvalidBillingCycleSpecificationCharacteristicValues",
+            "The characteristic %s with value %s should be less than %scharacteristic %s with value %s.",
+            "186"),
+    NON_BUNDLE_PO_WITHOUT_SPECIFICATION(
+            "CPMCDAL.NonBundlePOWithoutSpecification",
+            "Product offering (%s) of offeringType other than BUNDLE must have product specification.",
+            "187"),
+    INVALID_PRODUCT_WITH_BUNDLE_ONLY_PURPOSE_SET(
+            "CPMCDAL.InvalidProductWithBundleOnlyPurposeSet",
+            "Product %s with product offering %s, having purpose BUNDLE_ONLY, must be inside bundle product only.",
+            "188"),
+    CHARACTERISTICS_NOT_ALLOWED_WITHOUT_SPECIFICATION(
+            "CPMCDAL.CharacteristicsNotAllowedWithoutSpecification",
+            "Characteristic value(s) for product %s with product offering %s is not allowed if product specification is not set.",
+            "189"),
+    OFFERING_TYPE_BUNDLE_REQUIRED(
+            "CPMCDAL.OfferingTypeBundleRequired",
+            "Product offering %s does not contain offering type bundle.",
+            "190"),
+    INVALID_COMPRISED_OF_LIST_FOR_BUNDLE_PRODUCT(
+            "CPMCDAL.InvalidComprisedOfListForBundleProduct",
+            "ComprisedOf list of a bundle product %s with product offering %s must contain product id(s) of sub products.",
+            "191"),
+    PRODUCT_HIERARCHY_MISMATCH_TO_PRODUCT_OFFERING_HIERARCHY(
+            "CPMCDAL.ProductHierarchyMismatchToProductOfferingHierarchy",
+            "Hierarchy of product %s does not match with the hierarchy of its product offering %s (%s).",
+            "192"),
+    PRODUCT_OFFERING_UPDATE_NOT_ALLOWED(
+            "CPMCDAL.ProductOfferingUpdateNotAllowed",
+            "Update of product offering for existing product (%s) is not allowed.",
+            "193"),
+    INVALID_PARAMETER_VALUE_TYPE(
+            "CPMCDAL.InvalidParameterValueType",
+            "The value for parameter %s in %s with %s %s must be of type %s",
+            "194"),
+    STANDALONE_VALUE_IN_INPUT("CPMCDAL.StandaloneValueInInput", "The %s on entity %s with %s %s must be referenced.", "195"),
+    INVALID_LIST_SIZE("CPMCDAL.InvalidListSize", "The number of entries in %s on %s with %s %s is invalid.", "196"),
+    MULITPLE_REFERENCES_DETECTED_PPLC(
+            "CPMCDAL.MultipleReferencesDetected",
+            "The entity %s cannot be referenced by both specId and tag together.",
+            "197"),
+    EMPTY_SPECID_TAG_DETECTED_PPLC(
+            "CPMCDAL.MissingMandatoryInputValue",
+            "Both specId and tag cannot be empty or null simultaneously for %s.",
+            "198"),
+    INVALID_QUERY_PARAMETER("CPMCDAL.InvalidQueryParameter", "The query parameter %s with value %s may not contain %s", "199"),
+    INVALID_CHAR_RELATION_TYPE(
+            "CPMCDAL.InvalidCharRelationType",
+            "The relationType for characteristic value with targetId %s is invalid. Expecting %s",
+            "200"),
+    INVALID_CHAR_SET_SPECIFICATION(
+            "CPMCDAL.InvalidCharSetSpecification",
+            "The CharacteristicSetSpecication with id %s is not valid for entityType %s",
+            "201"),
+    MULITPLE_REFERENCES_DETECTED("CPMCDAL.MultipleReferencesDetected", "The entity %s cannot be referenced multiple times.", "202"),
+    MULTIPLE_USAGE_DETECTED("CPMCDAL.MultipleUsageDetected", "The %s with %s %s cannot be referenced multiple times.", "203"),
+    INVALID_RELATION("CPMCDAL.InvalidRelation", "The relation to the target entity %s is invalid.", "204"),
+    INVALID_VALUE_RANGE("CPMCDAL.InvalidValueRange", "The value for the attribute %s on %s must be between %s and %s.", "205"),
+    CIL_CLUSTER_OVERLOADED("CPMCDAL.CILClusterOverloaded", "The cil cluster is overloaded.", "206"),
+    REFERENCED_PRODUCT_BUCKET_LINK_NOT_A_PROVIDER(
+            "CPMCDAL.ReferencedProductBucketLinkNotAProvider",
+            "The referenced product with id %s from product bucket link is not a provider",
+            "207"),
+    INVALID_NUMBER_OF_CONSUMER_PRODUCTS(
+            "CPMCDAL.InvalidNumberOfConsumerProducts",
+            "The number of consumer products for product with id %s cannot exceed the amount of %s",
+            "208"),
+    CHARACTERISTICS_NOT_ALLOWED_WITH_SECURE_PMS(
+            "CPMCDAL.CharacteristicsNotAllowedWithSecurePaymentMethodSpecification",
+            "Characteristics Specification is allowed only for non-secure Payment Method Specification",
+            "209"),
+    NO_RELATION_EXIST("CPMCDAL.NoRelationExist", "No relation exist between %s with [%s = %s] and %s with [%s = %s]", "210"),
+    NO_RELATION_EXIST_FOR_ENTITY(
+            "CPMCDAL.NoRelationExistForEntity",
+            "For %s with [id = %s], no relation exists between %s with [id = %s] and %s with [id = %s]",
+            "211"),
+    PAYMENT_METHOD_SPECIFICATION_NOT_ACTIVE(
+            "CPMCDAL.PaymentMethodSpecificationNotActive",
+            "Payment Method Specification [id=%s] is not active",
+            "212"),
+    CSR_SPECIFICATION_NOT_ACTIVE("CPMCDAL.CSRSpecificationNotActive", "CSR Specification [id=%s] is not active", "213"),
+    TOKEN_MANDATORY_FOR_SECURE_PM("CPMCDAL.TokenMandatoryForSecurePaymentMethod", "Token Mandatory For Secure Payment Method", "214"),
+    TOKEN_NOTALLOWED_FOR_NONSECURE_PM(
+            "CPMCDAL.TokenNotAllowedForNonSecurePaymentMethod",
+            "Token Not Allowed For Non-Secure Payment Method",
+            "215"),
+    USE_FOR_AUTO_REFILL_TRUE_NOT_ALLOWED(
+            "CPMCDAL.UseForAutoRefillTrueNotAllowed",
+            "The Payment Method with Payment Method Specification [id=%s] is not allowed for auto refill",
+            "216"),
+    MULTIPLE_USE_FOR_AUTO_REFILL_TRUE_NOT_ALLOWED(
+            "CPMCDAL.MultipleUseForAutoRefillTrueNotAllowed",
+            "More than one Payment Method with auto refill cannot be defined on Party",
+            "217"),
+    INVALID_HUMAN_READABLE_ID("CPMCDAL.HumanReadableIdInvalid", "The humanReadableId %s cannot %s", "218"),
+    NO_VALID_EFFECTIVE_STRATEGY_FOR_PO_POLICY_REF(
+            "CPMCDAL.NoValidEffectiveStrategyExistsForPOPolicyRef",
+            "No valid Effective Strategy exists for POPolicyRef for Product with productOfferingId = %s per service",
+            "219"),
+    CFSS_TYPE_NOT_SUPPORTED("CPMCDAL.CFSSTypeNotSupported", "CFSS Type %s is not supported.", "220"),
+    RFSS_TYPE_NOT_SUPPORTED("CPMCDAL.RFSSTypeNotSupported", "RFSS Type %s is not supported.", "221"),
+    CFSS_SUB_TYPE_NOT_SUPPORTED("CPMCDAL.CFSSSubTypeNotSupported", "CFSS SubType %s is not supported.", "222"),
+    RFSS_SUB_TYPE_NOT_SUPPORTED("CPMCDAL.RFSSSubTypeNotSupported", "RFSS SubType %s is not supported.", "223"),
+    RFSS_PROVISIONING_SYSTEM_NOT_SUPPORTED(
+            "CPMCDAL.RFSSProvisioningSystemNotSupported",
+            "RFSS Provisioning System %s is not supported.",
+            "224"),
+    BLOCKING_SERVICE_HIERARCHY_MISMATCH_TO_BLOCKING_SERVICE_SPECIFICATION_HIERARCHY(
+            "CPMCDAL.BlockingServiceHierarchyMismatchToBlockingServiceSpecificationHierarchy",
+            "Service (%s) with specificationId %s does not match the hierarchy to its specification's hierarchy.",
+            "225"),
+    INVALID_TRACING_PARAMETER_SET(
+            "CPMCDAL.TracingParameterSetInvalid",
+            "The Tracing parameter set invalid: missing required properties: %s",
+            "226"),
+    PAYMENT_METHOD_ENTITY_NOT_EXISTS(
+            "CPMCDAL.PaymentMethodEntityNotExists",
+            "The PaymentMethod entity with [id=%s] does not exist.",
+            "227"),
+    INVALID_RMREF("CPMCDAL.InvalidRmRef", "The RmRef %s is invalid. %s", "228"),
+    UPDATE_STATE_MACHINE_NOT_ALLOWED(
+            "CPMCDAL.UpdateStateMachineNotAllowed",
+            "The state machine %s is already created with %s. Update operation not Allowed.",
+            "229"),
+    RELATION_TYPE_NOT_SUPPORTED("CPMCDAL.RelationTypeNotSupported", "Relation type %s not supported.", "230"),
+    INVALID_SERVICE_REFERENCE(
+            "CPMCDAL.InvalidServiceReference",
+            "The service reference with %s %s on service with %s %s is invalid.",
+            "231"),
+    MISSING_REQUIRED_REFERENCE("CPMCDAL.MissingRequiredReference", "The %s with %s %s requires a reference to %s with %s %s.", "232"),
+    ILLEGAL_PPLC_SPEC_EDIT_STATE("CPMCDAL.InvalidPplcEditState", "The editState is %s and can not be set to %s.", "233"),
+    ILLEGAL_PPLC_INITIAL_STATE("CPMCDAL.InvalidPplcInitialState", "The initialState can not be updated.", "234"),
+    NO_VALID_PRODUCT_POLICY_REF_EXISTS_FOR_PRODUCT_PRICE(
+            "CPMCDAL.NoValidProductPolicyRefExistsForProductPrice",
+            "No valid ProductPolicyRef exists for given ProductPrice with [ProductPrice = %s] of Product with [productOfferingId = %s] ",
+            "235"),
+    MISSING_MANDATORY_INPUT_FOR_BILLING_ACCOUNT(
+            "CPMCDAL.MissingMandatoryInputForBillingAccount",
+            "%s %s is mandatory in %s for %s BillingAccount.",
+            "236"),
+    INVALID_STATUS_FOR_BUNDLE_PRODUCT(
+            "CPMCDAL.InvalidStatusForBundleProduct",
+            "%s status is not allowed for Bundle Product with %s=%s",
+            "237"),
+    INVALID_COUNT_FOR_BUNDLE_PRODUCT(
+            "CPMCDAL.InvalidCountForBundleProduct",
+            "The number of Products [%s] should be either 1 or equal to total number of products [%s] in the Bundle Products with id = %s",
+            "238"),
+    INVALID_BUNDLE_PRODUCT_STATUS_TO_PRODUCT_STATUS_COVERAGE(
+            "CPMCDAL.InvalidBundleProductStatusToProductStatusCoverage",
+            "The Product [%s=%s] and status %s from %s to %s must be covered by Parent Product [%s=%s] and status %s",
+            "239"),
+    INVALID_ENTITY_STATUS_FOR_CONTRACT_MOVE("CPMCDAL.InvalidEntityStatusForContractMove", "The %s with id = %s is not in %s status", "240"),
+    PAYMENT_METHOD_SPECIFICATION_ALLOWED_PAYMENT_INITIATION_NOT_SET(
+            "CPMCDAL.PaymentMethodSpecificationAllowedForPaymentInitiation",
+            "AllowedForPaymentInitiation not present OR not set to true for Payment Method Specification [id=%s].",
+            "241"),
+    INVALID_CONSUMER_ENTRY_VALIDITY(
+            "CPMCDAL.InvalidConsumerEntryValidity",
+            "The consumer entry [%s=%s] with validFor [startDate=%s endDate=%s] is invalid as %s.",
+            "242"),
+    INVALID_CONSUMERPRODUCT_VALIDITY(
+            "CPMCDAL.InvalidConsumerProductValidity",
+            "The status timeLine of ConsumerProduct [startDate=%s, endDate=%s] with [%s=%s] should be covered by the linked ConsumerEntry [%s=%s] validFor [startDate=%s, endDate=%s].",
+            "243"),
+    NO_VALID_PAYMENT_CONTEXT_EXISTS_FOR_CONTRACT_WITH_LOAN_PRODUCT(
+            "CPMCDAL.NoValidPaymentContextExistsForContractWithLoanProduct",
+            "The Payment Context %s is not valid for Loan Product with [productOfferingId = %s]",
+            "244"),
+    NOTIFICATION_DATE_NOT_WITHIN_PRODUCT_ACTIVE_STATE_FOR_LOAN_PRODUCT(
+            "CPMCDAL.NotificationDateNotWithinProductActiveStateForLoanProduct",
+            "The %s notification request time %s, for loan product, is not covered within ProductActive status time period from %s to %s.",
+            "245"),
+    INVALID_LINKED_PRODUCT("CPMCDAL.InvalidLinkedProduct", "The %s with [%s = %s] of [%s] with [%s = %s] is invalid.", "246"),
+    SC_AND_SP_PRODUCT_NOT_ON_SAME_CONTRACT(
+            "CPMCDAL.SCAndSPProductNotOnSameContract",
+            "Sharing Consumer Product and Sharing Provider Product are not on same contract when SPS with [id = %s] has [sharingScope = %s].",
+            "247"),
+    EXCEEDS_COUNT_OF_MAX_CONSUMER_ENTRY(
+            "CPMCDAL.ExceedsCountOfMaxConsumerEntry",
+            "The consumerList size = %s in incoming payload exceeds configured max count = %s for the %s with [%s = %s].",
+            "248"),
+    INVALID_LINKED_ENTITY_STATUS(
+            "CPMCDAL.InvalidLinkedEntityStatus",
+            "The status %s of Linked %s in the %s with [%s = %s] is invalid.",
+            "249"),
+    INVALID_SHARING_PROVIDER_LINK(
+            "CPMCDAL.InvalidSharingProviderLink",
+            "Sharing Provider Link in %s with [%s = %s] is invalid because Consumer Entry is not valid.",
+            "250"),
+    SHARING_SCOPE_VIOLATION(
+            "CPMCDAL.SharingScopeViolation",
+            "Sharing Scope %s is violated as defined in Sharing Provider Specification with [id = %s].",
+            "251"),
+    CONSUMER_ENTRY_ALREADY_ASSOCIATED_WITH_SHARING_CONSUMER(
+            "CPMCDAL.ConsumerEntryAlreadyAssociatedWithSharingConsumer",
+            "The %s with [%s = %s] already has a valid Sharing Consumer.",
+            "252"),
+    DUPLICATE_CONSUMER_ENTRY_ID(
+            "CPMCDAL.DuplicateConsumerEntryId",
+            "The Consumer Entry in Sharing Provider Link of the %s with [%s = %s] is duplicate.",
+            "253"),
+    INVALID_BILLING_ACCOUNT_LINK(
+            "CPMCDAL.InvalidBillingAccountLink",
+            "The Customer with [id = %s] does not contain the Billing Account with [id = %s] referenced from the %s with [%s = %s] of the %s with [%s = %s].",
+            "254"),
+    CUSTOMER_NOT_EXIST_FOR_CONSUMER_ENTRY(
+            "CPMCDAL.CustomerNotExistForConsumerEntry",
+            "The Customer with [id = %s] does not exist for %s with [%s = %s].",
+            "255"),
+    NO_RELATION_EXIST_FOR_ENTITY_WITH_IDENTIFIER(
+            "CPMCDAL.NoRelationExistForEntityWithIdentifier",
+            "For %s with [%s = %s], no relation exists between %s with [id = %s] and %s with [id = %s]",
+            "256"),
+    NO_REFERENCE_EXIST_IN_ENTITY_WITH_IDENTIFIER(
+            "CPMCDAL.NoReferenceExistInEntityWithIdentifier",
+            "The %s with [id = %s] does not have a reference to %s with [id = %s] which is referenced by %s with [id = %s].",
+            "257"),
+    ALL_NETWORK_RFS_COMBINED_VALIDITY_NOT_COVERING_CFS_VALIDITY(
+            "CPMCDAL.AllNetworkRfsCombinedValidityNotCoveringCfsValidity",
+            "All network RFS  with serviceSpecificationId [id = %s] combined validity not covering CFS %s with [%s = %s] validity.",
+            "258"),
+    PIR_TIME_PERIOD_NOT_ALIGNED_WITH_USER_TIME_PERIOD(
+            "CPMCDAL.InvalidTimePeriodForPartyInteractionRole",
+            "The valid for time period is invalid for %s with %s %s are not aligned to the start and/or end of the %s validFor.",
+            "259"),
+    INVALID_REFERENCED_ENTITY_STATUS_COVERAGE_USER(
+            "CPMCDAL.InvalidReferencedEntityStatusCoverageUser",
+            "The %s with [%s = %s] with status %s from %s must not overlap the %s with [%s = %s] and validFor[start:%s, end:%s].",
+            "260"),
+    SHARED_PROVIDER_CONSUMER_NOT_REMOVABLE(
+            "CPMCDAL.SharedProviderConsumerNotRemovable",
+            "The Contract has ShareProvider [providerId=%s], which is having consumerList with [id = %s],is not allowed to be deleted.",
+            "261"),
+    UNMAPPED_ID_FOR_ENTITY("CPMCDAL.UnmappedIdForEntity", "The %s for %s with id %s is not mapped", "262"),
+    SERVICE_RESOURCES_NOT_UPATED("CPMCDAL.InvalidServiceReference", "%s is not allowed to be updated here as it is deprecated.", "263"),
+    CONSUMER_PRODUCT_LIMIT_UPDATE_NOT_ALLOWED(
+            "CPMCDAL.ConsumerProductLimitUpdateNotAllowed",
+            "The individual limit of %s with [%s = %s] of %s with [%s = %s] cannot be updated by the consumer.",
+            "264"),
+    CONSUMER_PRODUCT_BUCKET_THRESHOLD_UPDATE_NOT_ALLOWED(
+            "CPMCDAL.ConsumerProductBucketThresholdUpdateNotAllowed",
+            "The threshold value of %s with [%s = %s] of %s with [%s = %s] cannot be updated by the consumer.",
+            "265"),
+    CALENDAR_ENTRY_NOT_EXIST(
+            "CPMCDAL.CalendarEntryNotExistForSearchRequest",
+            "No Calendar Entry exists for the requested search parameters.",
+            "266"),
+    INVALID_GENERIC_SCHEDULER_FUTURE_DATE("CPMCDAL.InvalidDate", "Invalid %s. Can not exceed %s", "267"),
+    INVALID_GENERIC_SCHEDULER_PAST_DATE("CPMCDAL.InvalidDate", "Invalid %s. Can not be in the %s", "268"),
+    INVALID_PARTY_INTERACTION_ROLE_ON_SOURCE_CONTRACT(
+            "CPMCDAL.InvalidPartyInteractionRoleOnSourceContract",
+            "The PartyInteractionRole holds the party role which is not exclusive user or owner of the contract.",
+            "269"),
+    SHARING_PROVIDER_CONSUMPTION_NOT_ALLOWED_BY_OTHER_CONTRACTS(
+            "CPMCDAL.SharingProviderConsumptionNotAllowedByOtherContracts",
+            "The contract move is not allowed when %s having sharing provider is not exclusive to moving contract.",
+            "270"),
+    ACTIVE_PROVIDER_PRODUCT_BUCKET_NOT_ALLOWED(
+            "CPMCDAL.ActiveProviderProductBucketNotAllowed",
+            "The contract move is not allowed with %s id=%s having Active provider product.",
+            "271"),
+    INVALID_PAYMENT_CONTEXT_FOR_CONTRACT_MOVE(
+            "CPMCDAL.InvalidPaymentContextForContractMove",
+            "%s is not valid payment context for moving contract involved in contract move.",
+            "272"),
+    OPERATION_NOT_ALLOWED_WITH_INVALID_ENTITY_STATUS(
+            "CPMCDAL.OperationNotAllowedWithInvalidEntityStatus",
+            "The %s %s operation is not allowed for %s in %s status.",
+            "273"),
+    NOT_ALLOWED_OPERATION_FOR_ENTITY(
+            "CPMCDAL.NotAllowedOperationForEntity",
+            "The %s operation is not allowed for %s as it is not the same %s initiated by contract move.",
+            "274"),
+    ANOTHER_CONTRACT_MOVE_ALREADY_IN_PROGRESS(
+            "CPMCDAL.AnotherContractMoveAlreadyInProgress",
+            "The contract with id %s is already under move.",
+            "275"),
+    MULTIPLE_ACTIVE_STATUS_NOT_ALLOWED(
+            "CPMCDAL.NotAllowedToHaveMultipleActiveStatuses",
+            "%s with id %s is not allowed to have multiple active statuses in complete timeline while doing contract move.",
+            "276"),
+    INVALID_INPUT_FOR_CONTRACT_MOVE("CPMCDAL.InvalidInputForContractMove", "The %s %s can not be same as %s", "277"),
+    INVALID_VALIDFOR_START_DATE(
+            "CPMCDAL.InvalidValidForStartDate",
+            "The validfor start of status %s for the entity %s with id %s cannot be %s.",
+            "278"),
+    INVALID_VALIDFOR_END_DATE(
+            "CPMCDAL.InvalidValidForEndDate",
+            "The validfor end of status %s for the entity %s with id %s cannot be %s.",
+            "279"),
+    CONTRACT_ALREADY_MOVED("CPMCDAL.ContractAlreadyMoved", "Contract with id %s has already moved to customer with id %s.", "280"),
+    CONTRACT_MOVE_NOT_ALLOWED(
+            "CPMCDAL.ContractMoveNotAllowed",
+            "Contract with [ id = %s ] can not be moved as referencing agreementRealization with [ id = %s ] has child agreementRealization(s)",
+            "281"),
+    EXTERNAL_ID_ENTITY_ALREADY_EXISTS("CPMCDAL.ExternalIdAlreadyExists", "The %s with External id %s already exists.", "282"),
+    INVALID_COMBINATION_OF_UNIT_OF_MEASURE(
+            "CPMCDAL.InvalidCombinationOfUnitOfMeasure",
+            "unitOfMeasure[%s] for measure[%s] must be same for all adjustment Characteristics.",
+            "283"),
+    VALUE_CAN_NOT_BE_PERSONALIZED_MANUALLY(
+            "CPMCDAL.ValueCanNotBePersonalizedManually",
+            "Value of %s must be set on CSR specfication and can not personalized manually.",
+            "284"),
+    SINGLE_VALUE_ALLOWED("CPMCDAL.SingleValueAllowed", "Only one %s is allowed for defining adjustment limit for %s,%s.", "285"),
+    VALUE_MUST_BE(
+            "CPMCDAL.ValueMustBe",
+            "Value[%s] defined for purpose %s must be less than or equal to value[%s] defined in specification.",
+            "286"),
+    INVALID_ADJUSTMENT(
+            "CPMCDAL.InvalidAdjustment",
+            "Invalid Adjustment quantity, Allowed limit left for [%s] counter is [%s], either update counter to 0 or provide valid adjustable quantity.",
+            "287"),
+    INVALID_UNDO_ADJUSTMENT(
+            "CPMCDAL.InvalidUndoAdjustment",
+            "Invalid Undo Adjustment quantity, Allowed Undo limit for [%s] is [%s]. please provide valid undo quantity.",
+            "288"),
+    INVALID_VALUE_TYPE_FOR_ADJUSTMENT(
+            "CPMCDAL.InvalidValueTypeForAdjustment",
+            "Adjustment can't be done due to unsupported value type for the provided measure [%s] and Counter type [%s] with unit of measure [%s] in CSR Specification.",
+            "289"),
+    NO_LIMITS_DEFINED_FOR_MEASURE(
+            "CPMCDAL.NoLimitsDefinedForMeasure",
+            "No Limits defined for Measure [%s] and Counter Type [%s] with Unit of measure [%s] in CSR specification.",
+            "290"),
+    TOTAL_ADJUSTED_LIMIT_CAN_NOT_EXCEED_SPEC_VALUE(
+            "CPMCDAL.TotalAdjustedLimitCanNotExceedSpecValue",
+            "Total [%s] adjustment limit cannot be exceed value defined in specification.",
+            "291"),
+    UPDATE_TERMINATED_ENTITY_STATUS_TIMELINE_NOT_ALLOWED(
+            "CPMCDAL.UpdateTerminatedEntityNotAllowed",
+            "Update operation not allowed for %s id %s as current status is %s.",
+            "292"),
+    EXTERNAL_REFERENCE_DOES_NOT_EXISTS("CPMCDAL.ExternalReferenceDoesNotExists", " %s does not exist.", "293"),
+    INVALID_COUNTER_TYPE_FOR_LICENSING("CPMCDAL.InvalidCounterTypeForLicense", "Counter type %s in query parameter is invalid.", "294"),
+    ENTITY_LIFECYCLE_ACTION_SPECIFICATION_NOT_ACTIVE(
+            "CPMCDAL.EntityLifeCycleSpecNotActive",
+            "EntityLifeCycleAction Specification %s is not active.",
+            "295"),
+    INVALID_PERSONALIZATION_WITH_VALUE_REGULATOR_SELECTION(
+            "CPMCDAL.InvalidPersonalizationWithValueRegulatorSelection",
+            "The Personalization of CharacteristicValue.value [%s] is not allowed for CharacteristicSpecification [id = %s] with value regulator SELECTION in entity [%s].",
+            "296"),
+    INVALID_ENTITY_TYPE("CPMCDAL.InvalidEntityType", "EntityType %s is not Valid", "297"),
+    OPERATION_NOT_ALLOWED("CPMCDAL.OperationNotAllowed", "Operation can only be performed to CSR with active status.", "298"),
+    OPERATION_NOT_ALLOWED_IN_AGREEMENT_REALIZATION(
+            "CPMCDAL.OperationNotAllowedInAgreementRealization",
+            "Contract [id = %s] with Billing Account Assignment Rules Link cannot be associated with AgreementRealization [id = %s].",
+            "299"),
+    NO_RELATION_EXIST_BETWEEN_SPECS("CPMCDAL.NoRelationExistBetweenSpecs", "The %s with id = %s does not contain a relation to %s.", "300"),
+    INVALID_PARAMETER_WITH_IDENTIFIER(
+            "CPMCDAL.InvalidParameterWithIdentifier",
+            "The %s with id = %s in %s with %s = %s should have mustSelectBA as true.",
+            "301"),
+    FAULTY_CONFIG("CPMCDAL.faultyConfig", "The %s configuration for %s is invalid or missing.", "302"),
+    INVALID_FLOW_REQUEST("CPMCDAL.InvalidRequest", "%s.", "303"),
+    INVALID_STATUS_TRANSITION_ELAS(
+            "CPMCDAL.InvalidEntityLifeCycleActionSpecificationStatusTransition",
+            "The status transition from %s to %s is not a valid transition for %s",
+            "304"),
+    DUPLICATE_TRANSITION_ELAS("CPMCDAL.DuplicateTransition", "Duplicate transition from %s to %s is not allowed", "305"),
+    INVALID_REQUEST_FOR_FAMILYACCOUNT(
+            "CPMCDAL.invalidRequestForFamilyAccount",
+            "The Family Account Feature is no more Supported,Please use feature - Sharing of Units on BA and PB Between Contracts",
+            "306"),
+    ELAS_SPEC_ALREADY_ATTACHED(
+            "CPMCDAL.EntityLifeCycleActionSpecificationAlreadyAtached",
+            "EntityLifeCycleAction Specification is already Attached",
+            "307"),
+    KEYINFO_VALID_FOR_ON_DEMAND_CHARACTERISTIC(
+            "CPMCDAL.KeyInfoValidForOnDemandCharacteristic",
+            "KeyInfo passed for characteristic id %s is not having decryption mode as ON_DEMAND in specification",
+            "308"),
+    REQUIRED_ATTRIBUTE_BD_MISSING(
+            "CPMCDAL.RequiredAttributeBDMissing",
+            "Bucket Determination with Bucket Determination Specification = %s should be present in the request as Sharing Provider Specification = %s has a relation to Bucket Determination Specification  = %s",
+            "309"),
+    KEYINFO_MANDATORY_FOR_ON_DEMAND_CHARACTERISTIC(
+            "CPMCDAL.KeyInfoMandatoryForOnDemandCharacteristic",
+            "KeyInfo is mandatory for characteristic id %s having decryption mode as ON_DEMAND in specification",
+            "310"),
+    DUPLICATE_LIFECYCLETYPE_FOR_ELAS(
+            "CPMCDAL.DuplicateLifecycleTypeForELAS",
+            "%s EntityLifeCycleAction Specification is already created with lifecycle type %s",
+            "311"),
+    INVALID_CUSTOM_PROPERTY_TEMPLATE(
+            "CPMCDAL.InvalidCustomPropertyTemplate",
+            "Custom Property Template associated with specRef %s is not valid.",
+            "312"),
+    INVALID_CUSTOM_PROPERTY_VALUE(
+            "CPMCDAL.InvalidCustomPropertyValue",
+            "Invalid custom property value with name %s and valueType %s",
+            "313"),
+    ALIAS_NOT_SUPPORTED_FOR_MIGRATION("CPMCDAL.AliasNotSupportedForMigration", "Migration not supported for alias %s.", "314"),
+    FILE_GENERATION_PROCESS_ALREADY_RUNNING(
+            "CPMCDAL.FileGenerationProcessAlreadyRunning",
+            "File generation Process  for %s is already in running state.",
+            "315"),
+    DELETION_NOT_ALLOWED_IN_PRODUCTION_SYSTEM(
+            "CPMCDAL.DeletionNotAllowedInProductionSystem",
+            "Deletion of %s is not allowed on Production System.",
+            "316"),
+    DUPLICATE_ANNOTATION_KEY("CPMCDAL.DuplicateKeyInAnnotationList", "Duplicate key for %s is not allowed in the Annotation List.", "317"),
+    REFERRING_SPECIFICATION_CAN_NOT_BE_LOCKED(
+            "CPMCDAL.ReferringSpecificationCannotBeLocked",
+            "The %s with id %s cannot be locked since referenced %s with id %s is not locked.",
+            "318"),
+    INCORRECT_SOURCE_TARGET_ALIGNMENT(
+            "CPMCDAL.IncorrectCharSpecOrCharSpecValueAlignment",
+            "The %s with [ id = %s ] is missing in source configuration.",
+            "319"),
+    INVALID_ENTITY_ID("CPMCDAL.InvalidId", "The entity with id %s isn't correct according to the naming convension.", "320"),
+    QUERY_PARAMETERS_NOT_REQUIRED("CPMCDAL.QueryParametersNotRequired", "Query parameter is only applicable for the test system.", "321"),
+    INVALID_ANNOTATION_INPUT_FOR_BUSINESS_CONFIG(
+            "CPMCDAL.InvalidAnnotationInputForBusinessConfig",
+            "The business config %s with id %s does not accept %s as an input for the annotation %s.",
+            "322"),
+    INACTIVE_SENSITIVE_TYPE_ON_MSV(
+            "CPMCDAL.InactiveSensitiveTypeOnMSV",
+            "SensitiveType %s for characteristic id %s is inactive at MSV.",
+            "323"),
+    INVALID_DELETE_CBCS_REQUEST(
+            "CPMCDAL.InvalidDeleteCbcsRequest",
+            "Customer Billing Cycle Specifications count in delete Bill Cycle request payload must be two",
+            "324"),
+    INVALID_DELETE_OR_UPDATE_CBCS_REQUEST(
+            "CPMCDAL.InvalidDeleteOrUpdateCbcsRequest",
+            "Bill Cycle Change and Deletion cannot be performed in the same request.",
+            "325"),
+    MISSING_CBCS_VALID_FOR_IN_REQUEST(
+            "CPMCDAL.MissingCbcsValidForInRequest",
+            "For multiple Bill Cycle change in same request, validFor Start and End Date is mandatory for all.",
+            "326"),
+    CBCS_VALID_FOR_NOT_SD_ALIGNED(
+            "CPMCDAL.CbcsValidForNotSDAligned",
+            "The validFor Start Date of Incoming Customer Billing Cycle Specification with [ %s = %s ] is not aligned to the Billing Cycle Spec with [ BillingCycleSpecId = %s ] attached to it. A possible date based on the SD could be [ Date = %s ].",
+            "327"),
+    CBCS_VALID_FOR_NOT_SD_ALIGNED_TO_PREVIOUS_CBCS(
+            "CPMCDAL.CbcsValidForNotSDAlignedToPreviousCbcs",
+            "The validFor Start Date of Incoming Customer Billing Cycle Specification with [ %s = %s ] should be aligned to the Billing Cycle Spec with [ BillingCycleSpecId = %s ] attached to its previous CBCS when BillCycleChangeType is PRORATE_END_CURRENT of incoming CBCS. A possible date based on the SD could be [ Date = %s ].",
+            "328"),
+    NEW_TIMELINE_NOT_CONTIGUOUS(
+            "CPMCDAL.NewTimelineNotContiguous",
+            "Incoming Customer Bill Cycle Specification is not forming a contiguous timeline for Customer Bill Specification with [%s = %s]. The timeline is broken at Customer Bill Cycle Specification with [ %s = %s ].",
+            "329"),
+    NEW_CBCS_END_EXCEEDING_PARENT_END(
+            "CPMCDAL.NewCbcsEndExceedingParentEnd",
+            "Incoming CBCS with [ %s = %s ] and  [ End Date = %s ] is exceeding its parent CBS [ End Date = %s ].",
+            "330"),
+    NEW_CBCS_START_BEFORE_PARENT_START(
+            "CPMCDAL.NewCbcsStartBeforeParentStart",
+            "Incoming CBCS with [ %s = %s ] and  [ Start Date = %s ] is before its parent CBS [ Start Date = %s ].",
+            "331"),
+    MULTIPLE_ACTIVE_CBCS_WITH_SAME_BCS_NOT_ALLOWED(
+            "CPMCDAL.MultipleActiveCBCSWithSameBCSNotAllowed",
+            "Another Customer Bill Cycle Specification with Bill Cycle Specification [%s] is already created for Customer Bill Specification. Multiple active customer bill cycle specification  with the same recurrence is not allowed.",
+            "332"),
+    MULTIPLE_BC_CHANGE_IN_THE_PERIOD_NOT_ALLOWED(
+            "CPMCDAL.MultipleBCChangeInThePeriodNotAllowed",
+            "Multiple Bill Cycle change is not allowed in the time period [ Start Date = %s ] and [ End Date = %s ].",
+            "333"),
+    INCOMING_CBCS_TIMEPERIOD_INVALID(
+            "CPMCDAL.IncomingCbcsTimePeriodInvalid",
+            "Incoming CBCS with [ %s = %s ] and [ Start Date = %s ] and [ End Date = %s ], time period is not valid.",
+            "334"),
+    OPERATION_NOT_ALLOWED_ON_PRORATED_CBCS(
+            "CPMCDAL.OperationNotAllowedOnProratedCbcs",
+            "%s of existing CBCS with [ %s = %s ], [ %s = %s ] and [ Start Date = %s ] within the current bill period is not allowed as its pro-ration has been already started.",
+            "335"),
+    BILLING_ACCOUNT_MISMATCH(
+            "CPMCDAL.BillingAccountMismatch",
+            "The billing account with [%s = %s] defined in %s with [%s = %s] is not present on customer.",
+            "336"),
+    ATTRIBUTE_NOT_ALLOWED(
+            "CPMCDAL.AttributeNotAllowed",
+            "The attribute %s is not allowed in %s as schedule definition for %s with [%s = %s] is not bill cycle aligned.",
+            "337"),
+    INVALID_ARRTIBUTE("CPMCDAL.InvalidAttribute", "The attribute %s can only be defined in a %s with %s as %s.", "338"),
+    DEFAULT_TRANSITION_NOT_DEFINED(
+            "CPMCDAL.DefaultTransitionNotDefined",
+            "The value for parameter %s of %s is not allowed when default transition does not exist.",
+            "339"),
+    SPECIFICATION_OUT_OF_SYNC(
+            "CPMCDAL.SpecificationIsOutOfSync",
+            "%s export has failed as %s with name [%s] is marked out of sync.",
+            "340"),
+    NO_ACTIVE_CBCS_FOR_BA("CPMCDAL.NoActiveCBCSForBA", "No active bill cycle for the %s with [%s = %s].", "341"),
+    INVALID_OPERATION_ON_ACTIVE_CBCS(
+            "CPMCDAL.InvalidOperationOnActiveCBCS",
+            "Active customer bill cycle specification with [ %s = %s ] and [ %s = %s ] is not allowed to %s",
+            "342"),
+    BILL_CYCLE_CHANGE_IN_PAST_NOT_ALLOWED(
+            "CPMCDAL.BillCycleChangeInPastNotAllowed",
+            "Bill cycle change in past of Customer Bill Cycle Specification with [ %s = %s ], [ %s = %s ] and [ Start Date = %s ] is not allowed",
+            "343"),
+    PERSONALIZATION_NOT_ALLOWED_WITH_EFFECTIVE_PRICE(
+            "CPMCDAL.PersonalizationNotAllowed",
+            "Price Personalization is not allowed for effectivePrice, referred to by POPolicyRef with [PoPolicyRefId = %s]",
+            "344"),
+    NOT_LINKED_CONSUMER_PRODUCT("CPMCDAL.NotLinkedConsumerProduct", "The Product with id %s is not the linked consumer product", "345"),
+    MISSING_ATTRIBUTE_VALUE(
+            "CPMCDAL.MissingAttributeValue",
+            "The value for attribute %s is not found on the referenced %s with [%s = %s] or on incoming %s. Provide the value either in %s or in %s.",
+            "346"),
+    REFERENCE_CHANGE_NOT_ALLOWED(
+            "CPMCDAL.ReferenceChangeNotAllowed",
+            "The reference of %s cannot be changed in %s with [%s = %s] as %s with [%s = %s] is not bill cycle aligned.",
+            "347"),
+    CHILD_ENITY_VALIDITY_NOT_COVERED_BY_PARENT(
+            "CPMCDAL.ChildEntityValidityNotCoveredByParent",
+            "The child entity [ Entity Name = %s ] validity [ Start Date = %s ]  and [ End Date  = %s ] is not covered by the parent entity [ Entity Name = %s ] validity [ Start Date = %s ]  and [ End Date  = %s ].",
+            "348"),
+    FILE_GENERATION_PROCESS_ALREADY_INITIIATED(
+            "CPMCDAL.FileGenerationAlreadyInitiated",
+            "File generation not allowed for %s, which is already in initiated state, its being marked as failed, Please try again",
+            "349"),
+    PRODUCT_PROVISIONING_FAILURE(
+            "CPMCDAL.ProductProvisioningFailure",
+            "A normal price must exist for the recurrence product, referred to by POPolicyRef with [PoPolicyRefId = %s]",
+            "350"),
+    DB_OBFUSCATION_REQUEST_FAILED("CPMCDAL.DbObfuscationRequestFailed", "DbObfuscation request has failed, Reason: %s.", "351"),
+    INVALID_REQUEST_ELAS_SPEC("CPMCDAL.InvalidRequest.ELAS.Spec", "Invalid request as cannot %s for ACTIVE specification", "352"),
+    CHAR_VALUE_MUST_MATCH_CHAR_SPEC_VALUE_FOR_CPM_CHARACTERISTICS(
+            "CPMCDAL.CharValueMustMatchCharSpecValueForCpmCharacteristics",
+            "For value regulator %s, the CharacteristicValue.value %s must match the CharacteristicSpecificationValue.value %s for charValueRef %s in CharacteristicSpecification [ id = %s ].",
+            "353"),
+    INVALID_TIME_FORMAT_FOR_CHARACTERISTIC(
+            "CPMCDAL.TimeFormatInvalid",
+            "The personalization of characteristic values for CharacteristicSpecification [ id = %s ] in %s [ id = %s ] is invalid according to format [ %s ]",
+            "354"),
+    META_DATA_MISMATCH("CPMCDAL.MetaDataMismatch", "%s of %s with [%s] has been corrupted or altered after export.", "355"),
+    IMPORT_FAILED("CPMCDAL.ImportFailed", "Import of %s with %s has failed as no metaData info is found in the file.", "356"),
+    INVALID_INPUT_RECORDS("CPMCDAL.InvalidInputRecords", "%s records for %s contains duplicate or invalid values.", "357"),
+    ALREADY_REFERENCED(
+            "CPMCDAL.AlreadyReferenced",
+            "Entity [ name = %s ] with [ %s = %s ] is already referenced by another agreementRealization.",
+            "358"),
+    INVALID_FILE_NAME_FORMAT("CPMCDAL.InvalidFileNameFormat", "Only zip extention is supported for import specifications.", "359"),
+    INVALID_FILE_CONTENT("CPMCDAL.InvalidFileContent", "%s is missing or invalid.", "360"),
+    IMPORT_FAILED_DETAILS("CPMCDAL.ImportFailedDetails", "Failed to import %s file(s)", "361"),
+    INVALID_COUNTERTNAME("CPMCDAL.InvalidCounterName", "Invalid Counter Name", "362"),
+    INVALID_COUNTERTNAME_SUBTYPE("CPMCDAL.InvalidCounterNameSubtype", "No counter exist for subtype : %s", "363"),
+    INVALID_COUNTER_URL("CPMCDAL.InvalidURL", "Failed to Determine the entityOperationKey from the URL: %s", "364"),
+    META_STATE_INFO_NOT_FOUND(
+            "CPMCDAL.MetaStateInformationNotFound",
+            "MetaState information for the state %s is not found in the %s.",
+            "365"),
+    CREATE_OR_UPDATE_NOT_SUPPORTED_FOR_FEATURE_ACTIVE(
+            "CPMCDAL.CreateOrUpdateNotSupportedForFeatureActive",
+            "The creation or update of entity %s is not supported when feature %s is Active.",
+            "366"),
+    LC_SPECIFICATION_NOT_ALLOWED(
+            "CPMCDAL.LCSpecificationNotAllowed",
+            "Life Cycle Specification can only be assigned to contract when FeatureExtendedLifeCycle is Active.",
+            "367"),
+    PREPAID_LIFECYCLE_SPEC_NOT_ALLOWED_WITH_LC(
+            "CPMCDAL.PrePaidLifeCycleSpecNotAllowedWithLC",
+            "Prepaid life cycle specification cannot be assigned if custom LifeCycleSpecification is present.",
+            "368"),
+    LINKING_DOES_NOT_EXIST("CPMCDAL.LinkingDoesNotExist", "The %s with [%s= %s] is not linked to %s with [%s= %s].", "369"),
+    MISSING_MANDATORY_SPECIFICATION("CPMCDAL.MissingMandatorySpecification", "The mandatory specification for entity %s with [id = %s] is missing.","370"),
+    INVALID_STATUS_VALUE("CPMCDAL.InvalidStatusValue", "The validfor end of empty status is not allowed.", "372"),
+    REFILL_OPERATION_NOT_ALLOWED(
+            "CPMCDAL.RefillOperationNotAllowed",
+            "Refill Operation is not allowed on Contract with id = %s for status =  %s",
+            "373"),
+    CUSTOMER_ASSOCIATION_REMOVAL_NOT_ALLOWED(
+            "CPMCDAL.CustomerAssociationRemovalNotAllowed",
+            "The Customer [ id = %s] has entity %s  [ id = %s ] associated with agreementRealization [ id = %s].",
+            "374"),
+    SPEC_TO_INSTANCE_RELATION_BROKEN(
+            "CPMCDAL.SpecToInstanceRelationBroken",
+            "Spec relation %s broken for instance %s for AgreementRealization with [id = %s]",
+            "375"),
+    AGREEMENT_REALIZATION_DEREFERENCING_NOT_ALLOWED(
+            "CPMCDAL.AgreementRealizationDereferencingNotAllowed",
+            "The %s with [ id = %s] is referred in agreementRealization with [ id = %s ] and %s with [ id = %s ].",
+            "376"),
+    AGREEMENT_REALIZATION_GOVERNED_RELATION_BROKEN(
+            "CPMCDAL.AgreementRealizationGovernedRelationBroken",
+            "Governed relation broken for %s references of AgreementRealization with [id = %s]",
+            "377"),
+    ALL_GOVERNED_ENTITY_NOT_PRESENT(
+            "CPMCDAL.AllGovernedEntityNotPresent",
+            "The given agreementRealization doesn't have all the governed entities as defined in the specification.",
+            "378"),
+    MISSING_ENTITY_DEFAULT_SPEC_REF(
+            "CPMCDAL.SpecNotMigrated",
+            "The default specification is not migrated for associated with [ entity = %s] with [ Id = %s].",
+            "379"),
+    LOCK_CONTENTION("CPMCDAL.LockContentionDetected", "Lock acquisition failed for [ key = %s ].", "380"),
+    MISSING_MANDATORY_INPUT_FOR_CHARACTERISTIC_SPECIFICATION_FOR_ENTITY(
+            "CPMCDAL.MissingMandatoryInputForCharacteristicsSpecificationForEntity",
+            "Missing mandatory input of %s for %s [ id = %s ] in %s [ id = %s ] for %s [ id = %s ].",
+            "382"),
+    CUSTOMER_TYPE_EXTERNAL_NOT_DELETABLE(
+            "CPMCDAL.CustomerTypeExternalNotDeletable",
+            "The Customer [customerId = %s] is not allowed to be deleted as it has Sharing Provider [sharingProviderId = %s] which is linked with Sharing consumer [sharingConsumerId = %s] of other customer [customerId = %s].",
+            "383"),
+    SEARCH_INDEXING_IS_IN_PROGRESS("CPMCDAL.SearchIndexingIsInProgress", "Please try later, Indexing is not completed yet.", "384"),
+    CIL_SEARCH_FAILED("CPMCDAL.CilSearchFailed", "Cil Search has failed, Reason: %s", "385"),
+    INVALID_STATUS_TIMELINE_UPDATE_REQUEST(
+            "CPMCDAL.InvalidStatusTimelineUpdateRequest",
+            "The status timeline of %s with [id=%s] cannot be updated only in past or future.",
+            "386"),
+    LIFE_CYCLE_SPEC_UPDATE_NOT_ALLOWED(
+            "CPMCDAL.LifeCycleSpecificationUpdateNotAllowed",
+            "The LifeCycleSpecification is not allowed to be updated for the Contract with id [%s]",
+            "387");
+
+    private final String myShortDescription;
+    private final String myDetailedDescription;
+    private final String myResultCode;
+
+    ErrorCode(String errorCode, String defaultMessage, String resultCode)
+    {
+        myShortDescription = errorCode;
+        myDetailedDescription = defaultMessage;
+        myResultCode = resultCode;
+    }
+
+    /**
+     * @return a short description of the error
+     */
+    public String getShortDescription()
+    {
+        return myShortDescription;
+    }
+
+    /**
+     * @return the message associated with or without parameters for the error
+     */
+    public String getDetailedDescription()
+    {
+        return myDetailedDescription;
+    }
+
+    /**
+     * @param args
+     *the parameters that will be used in the description
+     * @return
+     */
+    public String getFormattedDetailedDescription(String... args)
+    {
+        return String.format(myDetailedDescription, args);
+    }
+
+    /**
+     * @return the resultCode
+     */
+    public String getResultCode()
+    {
+        return myResultCode;
+    }
+}

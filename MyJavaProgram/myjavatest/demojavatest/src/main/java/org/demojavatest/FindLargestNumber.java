@@ -8,7 +8,7 @@ public class FindLargestNumber {
 	{
 		Integer[] array= {23,98,98,3,98,32,45,5,65,5,76,48,5,86,98,5};
 		
-		Integer myNumber=findNumber(array,2);
+		Integer myNumber=findNumber(array,1);
 		System.out.println("Largest Number ::: "+myNumber);
 		System.out.println("Array "+Arrays.toString(array));
 	}
